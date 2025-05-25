@@ -164,6 +164,8 @@ class Platformer extends Phaser.Scene {
         this.keyWonder = false;
         this.doorHelp = false;
         this.keyHelp = false;
+        this.missingKey = false;
+        this.doorOpenDialogue = false;
 
         // Enable collision handling
         this.physics.add.collider(my.sprite.player, this.groundLayer);
@@ -236,7 +238,10 @@ class Platformer extends Phaser.Scene {
                 }
             }
             else if (this.hasKey) {
-                this.speak("time to go!");
+                if (!this.doorOpenDialogue) {
+                    this.doorOpenDialogue = true;
+                    this.speak("time to go!", 500);
+                }
                 if (Phaser.Input.Keyboard.JustDown(this.cKey)) {
                     obj2.anims.play('open_door');
                     this.sound.play('door', {volume: 0.4});
@@ -244,15 +249,12 @@ class Platformer extends Phaser.Scene {
                 }
             }
             else {
-                this.speak("this door has\na keyhole...", 500);
+                if (!this.missingKey) {
+                    this.missingKey = true;
+                    this.speak("this door has\na keyhole...", 500);
+                }
             }
         });
-
-        // debug key listener (assigned to D key)
-        this.input.keyboard.on('keydown-D', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
 
         // the vfx. all the magic happens here
 
@@ -584,6 +586,9 @@ class Platformer extends Phaser.Scene {
             my.vfx.land.startFollow(my.sprite.player, 0, my.sprite.player.displayHeight/2-5, false);
             my.vfx.land.start();
             this.sound.play('land', {volume: 0.3})
+
+            this.cameras.main.shake(100, 0.0005);
+
             this.jumpedOnce = false;
             this.particleTrigger = false;
         }
@@ -596,12 +601,12 @@ class Platformer extends Phaser.Scene {
         }
 
         if(Phaser.Input.Keyboard.JustDown(this.rKey)) {
-            this.win();
+            this.scene.restart();
         }
     }
 
     playerDeath() {
-        this.cameras.main.shake(100, 0.004);
+        this.cameras.main.shake(100, 0.005);
         this.sound.play('death', {volume: 0.6})
         my.sprite.player.x = this.spawn[0].x;
         my.sprite.player.y = this.spawn[0].y;
