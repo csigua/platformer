@@ -43,7 +43,7 @@ class Load extends Phaser.Scene {
 
         this.anims.create({
             key: 'idle',
-            frames: this.anims.generateFrameNames('character_sheet', { frames: [0, 1] }),
+            frames: this.anims.generateFrameNames('character_sheet', { frames: [0] }),
             frameRate: 30,
             repeat: -1
         });
@@ -56,9 +56,48 @@ class Load extends Phaser.Scene {
         });
 
         this.anims.create({
+            key: 'walk_double',
+            frames: this.anims.generateFrameNames('character_sheet', { frames: [9, 10] }),
+            frameRate: 20,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'idle_double',
+            frames: this.anims.generateFrameNames('character_sheet', { frames: [7] }),
+            frameRate: 30,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'jump_double',
+            frames: this.anims.generateFrameNames('character_sheet', { frames: [12] }),
+            frameRate: 30,
+            repeat: -1
+        });
+
+        this.anims.create({
             key: 'spring_up',
-            frames: this.anims.generateFrameNames('tilemap_sheet', { frames: [165, 163]})
-        })
+            frames: this.anims.generateFrameNames('tilemap_sheet', { frames: [165, 163, 164]})
+        });
+
+        this.anims.create({
+            key: 'coin',
+            frames: this.anims.generateFrameNames('tilemap_sheet', {frames: [21, 22]}),
+            frameRate: 5,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'chest_open',
+            frames: this.anims.generateFrameNames('tilemap_sheet', { frames: [390]})
+        });
+
+        this.anims.create({
+            key: 'open_door',
+            frames: this.anims.generateFrameNames('tilemap_sheet', { frames: [390]})
+        });
+
 
          // ...and pass to the next Scene
          this.scene.start("platformerScene");
