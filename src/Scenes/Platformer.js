@@ -153,6 +153,7 @@ class Platformer extends Phaser.Scene {
         this.rKey = this.input.keyboard.addKey('R');
         this.cKey = this.input.keyboard.addKey('C');
         this.shiftKey = this.input.keyboard.addKey('SHIFT');
+        this.spaceKey = this.input.keyboard.addKey('SPACE');
 
         // animate all coins
         for (const coin of this.coinGroup.getChildren()) {
@@ -560,7 +561,7 @@ class Platformer extends Phaser.Scene {
                 my.sprite.player.anims.play('jump', true);
             }
         }
-        if(my.sprite.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up)) {
+        if(my.sprite.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up) || Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
             this.jumpedOnce = true;
             my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
 
@@ -608,6 +609,7 @@ class Platformer extends Phaser.Scene {
     playerDeath() {
         this.cameras.main.shake(100, 0.005);
         this.sound.play('death', {volume: 0.6})
+        my.sprite.player.setVelocityY(0);
         my.sprite.player.x = this.spawn[0].x;
         my.sprite.player.y = this.spawn[0].y;
         this.deathCount++;
